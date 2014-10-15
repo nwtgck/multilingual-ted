@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="jp" ng-app="TED_APP">
+<head>
+	<meta charset="UTF-8">
+	<title>MyTED</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.3/angular.min.js"></script>
+	<script src="angular/config.js"></script>
+	<script src="angular/values.js"></script>
+	<script src="angular/factories.js"></script>
+	<script src="angular/controllers.js"></script>
+	<script src="angular/filters.js"></script>
+</head>
+<body>
+	<div ng-controller="searchCtrl">
+		<input type="search" ng-model="keyword" ng-keypress="pressInput($event)">
+		<button ng-click="search()">検索</button>
+		<div ng-show="searching">検索中...</div>
+		<table>
+			<tr ng-repeat="talk in talks">
+				<td>
+					<img ng-src="{{talk.image_url}}" src="image/noimage_113x85.jpg">
+				</td>
+				<td >
+					{{talk.name}}
+				</td>
+				<td>
+					{{talk.viewed_count | number}}
+				</td>
+			</tr>
+		</table>
+		<pre>{{talks | json}}</pre>
+	</div>
+</body>
+</html>
