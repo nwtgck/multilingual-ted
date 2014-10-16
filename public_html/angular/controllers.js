@@ -3,14 +3,14 @@ ANG_TED_APP.
 	/*
 		Talkを検索する
 	*/
-	controller('searchCtrl', ['$scope', '$http', 'API_URL', 'getTedPram', 'gettingTalk', '$timeout', function($scope, $http, API_URL, getTedPram, gettingTalk, $timeout){
+	controller('searchCtrl', ['$scope', '$http', 'API_URL', 'getTedPram', 'gettingTalk', '$timeout', '$location', 'getPram', function($scope, $http, API_URL, getTedPram, gettingTalk, $timeout, $location, getPram){
 
 		$scope.keyword  = "";
 		$scope.talks = [];
 		// 検索中か？
-		$scope.searching = false; 
+		$scope.isSearching = false; 
 		$scope.search = function(){
-			$scope.searching = true;
+			$scope.isSearching = true;
 			var pram = getTedPram({
 				q: $scope.keyword,
 				categories : "talks",
@@ -42,11 +42,13 @@ ANG_TED_APP.
 							});
 						}, 100);
 					}($scope.talks.length-1));
-
-
-					// 検索完了
-					$scope.searching = false;
 				}
+
+				// 検索完了
+				$scope.isSearching = false;
+			}).
+			error(function(){
+				$scope.isSearching = false;
 			});
 		};
 
@@ -54,5 +56,38 @@ ANG_TED_APP.
 			if(e.charCode == 13){
 				$scope.search();
 			}
-		}
+		};
+
+		/*
+			Talkページヘ
+		*/
+		$scope.goTalk = function(talk_id){
+			var param = getPram({
+				talk_id: talk_id
+			});
+			$location.url("/talk?"+param);
+		};
+	}]).
+	
+	/*
+		Talk
+	*/
+	controller('talkCtrl', ['$scope', '$location', 'gettingTalk', function($scope, $location, gettingTalk){
+		var talk_id = $location.search()['talk_id'];
+		$scope.talk_id = talk_id;
+		$scope.video_url = "";
+
+		// Talkを取得
+		gettingTalk(talk_id, function(talk){
+			$scope.talk = talk;
+			/*
+				Video
+				(Error: [$interpolate:interr])になり、Videoがバインドされないので、DOM操作する
+			*/
+			$scope.video_url = talk.media.internal['450k'].uri;
+			var myVideo = document.getElementsByTagName('video')[0];
+			myVideo.src = $scope.video_url;
+			myVideo.load();
+			console.log(talk);
+		});
 	}]);
