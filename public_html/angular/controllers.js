@@ -4,6 +4,7 @@ ANG_TED_APP.
 		Talkを検索する
 	*/
 	controller('searchCtrl', ['$scope', '$http', 'API_URL', 'getTedPram', 'gettingTalk', '$timeout', function($scope, $http, API_URL, getTedPram, gettingTalk, $timeout){
+
 		$scope.keyword  = "";
 		$scope.talks = [];
 		// 検索中か？
@@ -28,19 +29,20 @@ ANG_TED_APP.
 					$scope.talks.push(talk);
 
 					// Talkの画像などの詳しいデータを取得
+					
 					(function(talkIdx){
-						var talkId = $scope.talks[talkIdx].id;
 						$timeout(function(){
+							var talkId = $scope.talks[talkIdx].id;
 							gettingTalk(talkId, function(talk){
 								// 画像URL（最大サイズ）
 								var imageUrl = talk.images[0].image.url;
 								// 再生回数
 								$scope.talks[talkIdx].image_url = imageUrl;
 								$scope.talks[talkIdx].viewed_count = talk.viewed_count;
-								console.log(talk)
 							});
-						}, 0);
+						}, 100);
 					}($scope.talks.length-1));
+
 
 					// 検索完了
 					$scope.searching = false;

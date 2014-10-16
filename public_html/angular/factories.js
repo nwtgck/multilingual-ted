@@ -27,7 +27,6 @@ ANG_TED_APP.
 			}).
 			error(function(data, status, headers, config){
 				// エラーする限りループ
-				console.log(loopCnt)
 				if(loopCnt <= loopLim){
 					gettingTalk(id, success, loopCnt);
 				}
@@ -36,4 +35,33 @@ ANG_TED_APP.
 		};
 
 		return gettingTalk;
-	}])
+	}]).
+
+	factory('queQueries', ['$timeout', function($timeout){
+		var wait = 1000;
+		var queries = [];
+		var isLooping = false;
+		var loop = function(){
+			if(queries.length == 0){
+				// ループ終了
+				isLooping = false;
+			} else {
+				var query = queries.shift();
+				query();
+				$timeout(loop, wait);
+			}
+		};
+		var push = function(func){
+			queries.push(func);
+			if(isLooping == false){
+				// ループ開始
+				isLooping = true;
+				loop();
+			}
+		};
+
+		return {
+			push : push
+		};
+	}]);
+

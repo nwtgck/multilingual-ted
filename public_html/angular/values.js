@@ -14,4 +14,4 @@ ANG_TED_APP.
 			pram.push(name+"="+value);
 		}
 		return pram.join("&");
-	})
+	});
