@@ -72,10 +72,33 @@ ANG_TED_APP.
 	/*
 		Talk
 	*/
-	controller('talkCtrl', ['$scope', '$location', 'gettingTalk', function($scope, $location, gettingTalk){
+	controller('talkCtrl', ['$scope', '$location', 'gettingTalk', 'gettingSubtitle', function($scope, $location, gettingTalk, gettingSubtitle){
 		var talk_id = $location.search()['talk_id'];
 		$scope.talk_id = talk_id;
 		$scope.video_url = "";
+		$scope.video_time = 0;
+		$scope.subtitleLanguages = [];
+		$scope.subtitles = {};
+		$scope.nowSubtitles = {};
+
+		var setSubtitle = function(sec){
+			var subtitles = $scope.subtitles[$scope.subtitleLanguages[0]];
+			for(var i = 0; i < subtitles.length; i++){
+				var subtitle = subtitles[i].caption;
+				var startTime = subtitle.startTime;
+				if(startTime+12000 > sec*1000){
+					break;
+				}
+			}
+			
+			if(i == 0) return;
+			// iを元に字幕を入れる
+			for(var j = 0; j < $scope.subtitleLanguages.length; j++){
+				var lang = $scope.subtitleLanguages[j];
+				$scope.nowSubtitles[lang] = $scope.subtitles[lang][i-1].caption.content;
+			}
+			
+		};
 
 		// Talkを取得
 		gettingTalk(talk_id, function(talk){
@@ -87,7 +110,29 @@ ANG_TED_APP.
 			$scope.video_url = talk.media.internal['450k'].uri;
 			var myVideo = document.getElementsByTagName('video')[0];
 			myVideo.src = $scope.video_url;
+			myVideo.addEventListener("timeupdate", function(){
+				// videoの再生位置が変更した時
+				$scope.$apply(function(){
+					$scope.video_time = myVideo.currentTime;
+					setSubtitle($scope.video_time);
+				});	
+			}, false);
+
+			// 字幕取得
+			gettingSubtitle(function(subtitles){
+				$scope.subtitles["ja"] = subtitles;
+				$scope.subtitleLanguages.push("ja");
+			}, talk_id, "ja");
+
+			// 字幕取得
+			gettingSubtitle(function(subtitles){
+				$scope.subtitles["en"] = subtitles
+				$scope.subtitleLanguages.push("en");
+			}, talk_id, "en");
+
 			myVideo.load();
 			console.log(talk);
 		});
+
+
 	}]);

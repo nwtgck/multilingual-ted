@@ -63,5 +63,35 @@ ANG_TED_APP.
 		return {
 			push : push
 		};
+	}]).
+
+	/*
+		字幕取得
+	*/
+	factory('gettingSubtitle', ['$http', 'getTedPram', 'API_URL', function($http, getTedPram, API_URL){
+		var loopLim = 10;
+		var gettingSubtitle = function(success, talk_id, language, loopCnt){
+			loopCnt = loopCnt | 0;
+			loopCnt++;
+			var pram = getTedPram({
+				language: language || "en"
+			});
+			$http.jsonp(API_URL + "talks/"+talk_id+"/subtitles.json?"+pram).
+			success(function(data){
+				// コールバックする
+				var subtitles = [];
+				for(var i = 0; angular.isDefined(data[i+""]); i++){
+					subtitles.push(data[i+""]);
+				}
+				success(subtitles);
+			}).
+			error(function(data, status, headers, config){
+				// エラーする限りループ
+				if(loopCnt <= loopLim){
+					gettingSubtitle(talk_id, success, language, loopCnt);
+				}
+			});
+		};
+		return gettingSubtitle;
 	}]);
 

@@ -47,8 +47,10 @@
 	<script type="text/ng-template" id="/talk">
 		<div ng-controller="talkCtrl">
 			<video ng-src="{{video_url}}" controls></video>
-			{{video_url}}
-			<pre>{{talk | json}}</pre>
+			{{video_time | number:0}}
+			<h2 ng-repeat="lang in nowSubtitles">
+				{{lang}}
+			</h2>
 		</div>
 	</script>
 </body>
