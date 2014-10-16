@@ -120,6 +120,7 @@ ANG_TED_APP.
 				}
 				return;
 			}
+			$scope.nowSubtitles[lang] = "Loading "+langFullName+" subtitles...";
 			gettingSubtitle(function(subtitles){
 				$scope.subtitles[lang] = subtitles;
 				$scope.nowSubtitles[lang] = subtitleText;
