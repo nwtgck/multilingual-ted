@@ -75,6 +75,7 @@ ANG_TED_APP.
 	controller('talkCtrl', ['$scope', '$location', 'gettingTalk', 'gettingSubtitle', function($scope, $location, gettingTalk, gettingSubtitle){
 		var talk_id = $location.search()['talk_id'];
 		$scope.talk_id = talk_id;
+		$scope.talk;
 		$scope.video_url = "";
 		$scope.video_time = 0;
 		$scope.subtitleLanguages = [];
@@ -82,7 +83,12 @@ ANG_TED_APP.
 		$scope.nowSubtitles = {};
 
 		var setSubtitle = function(sec){
-			var subtitles = $scope.subtitles[$scope.subtitleLanguages[0]];
+			var subtitleLang;
+			for(var lang in $scope.nowSubtitles){
+				subtitleLang = lang;
+				break;
+			}
+			var subtitles = $scope.subtitles[subtitleLang];
 			for(var i = 0; i < subtitles.length; i++){
 				var subtitle = subtitles[i].caption;
 				var startTime = subtitle.startTime;
@@ -90,14 +96,34 @@ ANG_TED_APP.
 					break;
 				}
 			}
-			
 			if(i == 0) return;
+
 			// iを元に字幕を入れる
-			for(var j = 0; j < $scope.subtitleLanguages.length; j++){
-				var lang = $scope.subtitleLanguages[j];
+			for(var lang in $scope.nowSubtitles){
 				$scope.nowSubtitles[lang] = $scope.subtitles[lang][i-1].caption.content;
 			}
 			
+		};
+
+		// 字幕を表示するか決める
+		$scope.selectSubtitle = function(lang){
+			var langFullName = $scope.talk.languages[lang].name;
+			var subtitleText = langFullName+" subtitles are ready.";
+
+			if(angular.isDefined($scope.subtitles[lang])){
+				if(angular.isDefined($scope.nowSubtitles[lang])){
+					// 表示する字幕を削除
+					delete $scope.nowSubtitles[lang];
+				} else {
+					// $scope.subtilesにはあるので、表示言語を追加
+					$scope.nowSubtitles[lang] = subtitleText;
+				}
+				return;
+			}
+			gettingSubtitle(function(subtitles){
+				$scope.subtitles[lang] = subtitles;
+				$scope.nowSubtitles[lang] = subtitleText;
+			}, talk_id, lang);
 		};
 
 		// Talkを取得
@@ -118,17 +144,9 @@ ANG_TED_APP.
 				});	
 			}, false);
 
-			// 字幕取得
-			gettingSubtitle(function(subtitles){
-				$scope.subtitles["ja"] = subtitles;
-				$scope.subtitleLanguages.push("ja");
-			}, talk_id, "ja");
-
-			// 字幕取得
-			gettingSubtitle(function(subtitles){
-				$scope.subtitles["en"] = subtitles
-				$scope.subtitleLanguages.push("en");
-			}, talk_id, "en");
+			// デフォルトで英語・日本の字幕取得
+			$scope.selectSubtitle("en");
+			$scope.selectSubtitle("ja");
 
 			myVideo.load();
 			console.log(talk);

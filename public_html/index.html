@@ -45,12 +45,16 @@
 	
 	<!-- Talk Page -->
 	<script type="text/ng-template" id="/talk">
-		<div ng-controller="talkCtrl">
+		<div ng-controller="talkCtrl" class="talk_page">
 			<video ng-src="{{video_url}}" controls></video>
-			{{video_time | number:0}}
-			<h2 ng-repeat="lang in nowSubtitles">
+			<h2 class="subtitle" ng-repeat="lang in nowSubtitles">
 				{{lang}}
 			</h2>
+			<div class="scroll_box">
+				<div ng-repeat="(code, lang) in talk.languages">
+					<input type="checkbox" ng-click="selectSubtitle(code)" ng-checked="nowSubtitles[code] != undefined">{{lang.name}}
+				</div>
+			</div>
 		</div>
 	</script>
 </body>

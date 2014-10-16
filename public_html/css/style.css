@@ -1,7 +1,32 @@
 body{
-	font-size: 30px;
+	font-size: 25px;
+	padding-bottom: 3em;
 }
 
 input, button{
 	font-size: inherit;
+}
+
+.talk_page {
+
+}
+	.talk_page video{
+		width: 100%;
+	}
+
+	.talk_page .subtitle {
+		font-size: 1em;
+		padding: 0.5em;
+	}
+
+	.talk_page input[type=checkbox]{
+		width: 1em;
+		height: 1em;
+	}
+
+
+.scroll_box{
+	overflow: scroll;
+	width: 13em;
+	height: 15em;
 }
