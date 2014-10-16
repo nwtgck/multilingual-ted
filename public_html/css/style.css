@@ -12,6 +12,7 @@ input, button{
 }
 	.talk_page video{
 		width: 100%;
+		border: solid #ccc 5px;
 	}
 
 	.talk_page .subtitle {
@@ -24,8 +25,13 @@ input, button{
 		height: 1em;
 	}
 
+	.talk_page .scroll_box div{
+		margin-bottom: 1em;
+	}
+
 
 .scroll_box{
+	font-size: 1.3em;
 	overflow: scroll;
 	width: 13em;
 	height: 15em;

@@ -78,9 +78,13 @@ ANG_TED_APP.
 			});
 			$http.jsonp(API_URL + "talks/"+talk_id+"/subtitles.json?"+pram).
 			success(function(data){
+				// プレロール分の時間
+				var preroll_offset = data._meta.preroll_offset;
 				// コールバックする
 				var subtitles = [];
 				for(var i = 0; angular.isDefined(data[i+""]); i++){
+					// Prerollのぶんだけたす
+					data[i+""].caption.startTime += preroll_offset;
 					subtitles.push(data[i+""]);
 				}
 				success(subtitles);

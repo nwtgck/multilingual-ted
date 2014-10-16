@@ -50,11 +50,14 @@
 			<h2 class="subtitle" ng-repeat="lang in nowSubtitles">
 				{{lang}}
 			</h2>
+
+			Select subtitles
 			<div class="scroll_box">
 				<div ng-repeat="(code, lang) in talk.languages">
 					<input type="checkbox" ng-click="selectSubtitle(code)" ng-checked="nowSubtitles[code] != undefined">{{lang.name}}
 				</div>
 			</div>
+			<button ng-click="clearAll()">No subtitles</button>
 		</div>
 	</script>
 </body>

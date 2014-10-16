@@ -92,7 +92,7 @@ ANG_TED_APP.
 			for(var i = 0; i < subtitles.length; i++){
 				var subtitle = subtitles[i].caption;
 				var startTime = subtitle.startTime;
-				if(startTime+12000 > sec*1000){
+				if(startTime > sec*1000){
 					break;
 				}
 			}
@@ -124,6 +124,11 @@ ANG_TED_APP.
 				$scope.subtitles[lang] = subtitles;
 				$scope.nowSubtitles[lang] = subtitleText;
 			}, talk_id, lang);
+		};
+
+		// 字幕を表示しない
+		$scope.clearAll = function(){
+			$scope.nowSubtitles = {};
 		};
 
 		// Talkを取得
