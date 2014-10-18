@@ -72,14 +72,10 @@ ANG_TED_APP.
 	/*
 		Talk
 	*/
-	controller('talkCtrl', ['$scope', '$location', 'gettingTalk', 'gettingSubtitle', function($scope, $location, gettingTalk, gettingSubtitle){
+	controller('talkCtrl', ['$scope', '$location', 'gettingTalk', 'gettingSubtitle', '$timeout', function($scope, $location, gettingTalk, gettingSubtitle, $timeout){
 		var talk_id = $location.search()['talk_id'];
 		$scope.talk_id = talk_id;
 		$scope.talk;
-		/*
-			.mp4ファイルの動画URL
-		*/
-		$scope.video_url = "";
 		/*
 			動画の再生位置
 		*/
@@ -109,6 +105,10 @@ ANG_TED_APP.
 			文章字幕にするかどうか
 		*/
 		$scope.isSentenseSubtitled = false;
+		/*
+			動画の質
+		*/
+		$scope.video_quality = "450k";
 		/*
 			文の区切れ目を調べる
 		*/
@@ -206,6 +206,7 @@ ANG_TED_APP.
 				if(angular.isDefined($scope.nowSubtitles[lang])){
 					// 表示する字幕を削除
 					delete $scope.nowSubtitles[lang];
+					delete $scope.nowSentenseSubtitles[lang];
 				} else {
 					// $scope.subtilesにはあるので、表示言語を追加
 					$scope.nowSubtitles[lang] = subtitleText;
@@ -229,6 +230,20 @@ ANG_TED_APP.
 			$scope.nowSubtitles = {};
 		};
 
+		// 動画のURLが変更時
+		$scope.onchangeVideoUrl = function(){
+			var myVideo = document.getElementsByTagName('video')[0];
+			var currentTime = myVideo.currentTime;
+			myVideo.src = $scope.talk.media.internal[$scope.video_quality].uri;
+
+				
+			myVideo.addEventListener('loadedmetadata', function(){
+				myVideo.currentTime = currentTime;
+				myVideo.play();
+			});
+			
+		};
+
 		// Talkを取得
 		gettingTalk(talk_id, function(talk){
 			$scope.talk = talk;
@@ -236,9 +251,8 @@ ANG_TED_APP.
 				Video
 				(Error: [$interpolate:interr])になり、Videoがバインドされないので、DOM操作する
 			*/
-			$scope.video_url = talk.media.internal['450k'].uri;
+			$scope.onchangeVideoUrl();
 			var myVideo = document.getElementsByTagName('video')[0];
-			myVideo.src = $scope.video_url;
 			myVideo.addEventListener("timeupdate", function(){
 				// videoの再生位置が変更した時
 				$scope.$apply(function(){
