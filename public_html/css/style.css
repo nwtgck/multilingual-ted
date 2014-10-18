@@ -14,7 +14,7 @@ input, button{
 
 }
 	.talk_page video{
-		width: 100%;
+		/*width: 100%;*/
 		border: solid #ccc 5px;
 	}
 
@@ -32,9 +32,15 @@ input, button{
 		margin-bottom: 1em;
 	}
 
-.now_subtitle{
-	text-decoration: underline;
+.sentense_subtitle{
+	font-size: 0.9em;
+	font-weight: normal;
+	margin-bottom: 2em;
 }
+
+	.sentense_subtitle .now{
+		text-decoration: underline;
+	}
 
 .scroll_box{
 	font-size: 1.3em;

@@ -47,13 +47,22 @@
 	<script type="text/ng-template" id="/talk">
 		<div ng-controller="talkCtrl" class="talk_page">
 			<video ng-src="{{video_url}}" controls></video>
-			<span ng-repeat="sub in nowSentenseSubtitles['en']" ng-class="{now_subtitle: sub.now}">
-				{{sub.content}} 
-			</span>
-			{{start_idx}}, {{end_idx}}<br>
-			<h2 class="subtitle" ng-repeat="lang in nowSubtitles">
+
+			<!-- 字幕 -->
+			<h2 class="subtitle" ng-repeat="lang in nowSubtitles" ng-show="isSentenseSubtitled == false">
 				{{lang}}
 			</h2>
+
+			<!-- 文章字幕 -->
+			<div ng-repeat="(lang_code, v) in subtitles" ng-show="isSentenseSubtitled">
+				<h2 class="sentense_subtitle">
+					<span ng-repeat="sub in nowSentenseSubtitles[lang_code]" ng-class="{now: sub.now}">
+						{{sub.content}} 
+					</span>
+				</h2>
+			</div>
+
+			<input type="checkbox" ng-model="isSentenseSubtitled">文章字幕<br>
 
 			Select subtitles
 			<div class="scroll_box">

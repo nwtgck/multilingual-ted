@@ -106,6 +106,10 @@ ANG_TED_APP.
 		*/
 		var sentense_end_indexs = [];
 		/*
+			文章字幕にするかどうか
+		*/
+		$scope.isSentenseSubtitled = false;
+		/*
 			文の区切れ目を調べる
 		*/
 		var setSentenseEnds = function(){
