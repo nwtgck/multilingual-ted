@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 body{
-	font-size: 30px;
+	font-size: 25px;
 	font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
 	padding-bottom: 3em;
 }
@@ -32,6 +32,9 @@ input, button{
 		margin-bottom: 1em;
 	}
 
+.now_subtitle{
+	text-decoration: underline;
+}
 
 .scroll_box{
 	font-size: 1.3em;

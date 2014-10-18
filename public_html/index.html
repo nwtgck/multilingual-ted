@@ -47,6 +47,10 @@
 	<script type="text/ng-template" id="/talk">
 		<div ng-controller="talkCtrl" class="talk_page">
 			<video ng-src="{{video_url}}" controls></video>
+			<span ng-repeat="sub in nowSentenseSubtitles['en']" ng-class="{now_subtitle: sub.now}">
+				{{sub.content}} 
+			</span>
+			{{start_idx}}, {{end_idx}}<br>
 			<h2 class="subtitle" ng-repeat="lang in nowSubtitles">
 				{{lang}}
 			</h2>
