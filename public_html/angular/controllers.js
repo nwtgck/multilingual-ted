@@ -198,7 +198,7 @@ ANG_TED_APP.
 			}
 			
 			// 字幕をセット
-			for(var lang_code in $scope.subtitles){
+			for(var lang_code in $scope.nowSentenseSubtitles){
 				$scope.nowSentenseSubtitles[lang_code] = [];
 				for(i = start_idx; i <= end_idx; i++){
 					$scope.nowSentenseSubtitles[lang_code].push({
@@ -222,6 +222,7 @@ ANG_TED_APP.
 				} else {
 					// $scope.subtilesにはあるので、表示言語を追加
 					$scope.nowSubtitles[lang] = subtitleText;
+					$scope.nowSentenseSubtitles[lang] = [subtitleText];
 				}
 				return;
 			}
@@ -229,6 +230,7 @@ ANG_TED_APP.
 			gettingSubtitle(function(subtitles){
 				$scope.subtitles[lang] = subtitles;
 				$scope.nowSubtitles[lang] = subtitleText;
+				$scope.nowSentenseSubtitles[lang] = [subtitleText];
 
 				//　英語字幕の時は文章の区切れ目を調べる
 				if(lang == "en"){
