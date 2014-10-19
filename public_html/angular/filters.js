@@ -13,13 +13,14 @@ ANG_TED_APP.
 		return function(obj, prop){
 			var array = [];
 			for(var key in obj){
-				array.push({
-					key: key,
-					value: obj[key]
-				});
+				array.push(
+					obj[key]
+				);
 			}
-			return array.sort(function(o1, o2){
-				return o1 - o2;
+			array.sort(function(o1, o2){
+				return o1[prop] > o2[prop]? 1: -1;
 			});
+			
+			return array;
 		};
 	});

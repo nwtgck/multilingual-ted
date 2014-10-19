@@ -171,6 +171,10 @@ ANG_TED_APP.
 		*/
 		var setSubtitle = function(sec){
 			var idx = getSubtitleIndex(sec);
+			for(var lang in $scope.nowSubtitles){
+				var language = $scope.talk.languages[lang].name;
+				$scope.nowSubtitles[lang] = "["+language+" subtitles are ready]";
+			}
 			if(idx == -1) return;
 
 			// iを元に字幕を入れる
@@ -186,6 +190,11 @@ ANG_TED_APP.
 			var idx = getSubtitleIndex(sec);
 			var start_idx = 0;
 			var end_idx = 0;
+
+			for(var lang_code in $scope.nowSentenseSubtitles){
+				var language = $scope.talk.languages[lang_code].name;
+				$scope.nowSentenseSubtitles[lang_code] = [{content: "["+language+" sentence subtitles are ready]"}];
+			}
 			if(idx == -1) return;
 
 			// 文章のスタートとエンドを探す
