@@ -72,12 +72,13 @@
 			<input type="checkbox" ng-model="isSentenseSubtitled">文章字幕<br>
 
 			Select subtitles
+			<button ng-click="clearAll()">No subtitles</button>
 			<div class="scroll_box">
 				<div ng-repeat="(code, lang) in talk.languages">
 					<input type="checkbox" ng-click="selectSubtitle(code)" ng-checked="nowSubtitles[code] != undefined">{{lang.name}}
 				</div>
 			</div>
-			<button ng-click="clearAll()">No subtitles</button>
+			
 		</div>
 	</script>
 </body>

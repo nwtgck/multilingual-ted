@@ -153,9 +153,8 @@ ANG_TED_APP.
 			再生位置から、いまの字幕のインデックスを取得
 		*/
 		var getSubtitleIndex = function(sec){
-			var subtitleLang = Object.keys($scope.nowSubtitles)[0];
 
-			var subtitles = $scope.subtitles[subtitleLang];
+			var subtitles = $scope.subtitles["en"];
 			for(var i = 0; i < subtitles.length; i++){
 				var subtitle = subtitles[i].caption;
 				var startTime = subtitle.startTime;
@@ -229,15 +228,16 @@ ANG_TED_APP.
 					delete $scope.nowSentenseSubtitles[lang];
 				} else {
 					// $scope.subtilesにはあるので、表示言語を追加
-					$scope.nowSubtitles[lang] = subtitleText;
-					$scope.nowSentenseSubtitles[lang] = [subtitleText];
+					$scope.nowSubtitles[lang] = "";
+					$scope.nowSentenseSubtitles[lang] = [];
 				}
 				return;
 			}
 			$scope.nowSubtitles[lang] = "Loading "+langFullName+" subtitles...";
 			gettingSubtitle(function(subtitles){
 				$scope.subtitles[lang] = subtitles;
-
+				$scope.nowSubtitles[lang] = "";
+				$scope.nowSentenseSubtitles[lang] = [];
 				//　英語字幕の時は文章の区切れ目を調べる
 				if(lang == "en"){
 					setSentenseEnds();
@@ -248,6 +248,7 @@ ANG_TED_APP.
 		// 字幕非表示にする
 		$scope.clearAll = function(){
 			$scope.nowSubtitles = {};
+			$scope.nowSentenseSubtitles = {};
 		};
 
 		// 動画のURLが変更時
