@@ -17,8 +17,6 @@
 	<div ng-view>
 	</div>
 
-	
-
 	<!-- Page -->
 	<!-- Search Page -->
 	<script type="text/ng-template" id="/search">
@@ -39,7 +37,6 @@
 					</td>
 				</tr>
 			</table>
-			<pre>{{talks | json}}</pre>
 		</div>
 	</script>
 	
@@ -52,7 +49,7 @@
 
 			<!-- 字幕移動 -->
 			<div>
-				<button ng-click="changeVideoPositionBySubtitle(-1)">Previos</button>
+				<button ng-click="changeVideoPositionBySubtitle(-1)">Previous</button>
 				<button ng-click="changeVideoPositionBySubtitle(0)">Top of</button>
 				<span>{{nowSubtitleIndex + 1}} / {{subtitles['en'].length}}</span>
 				<button ng-click="changeVideoPositionBySubtitle(1)">Next</button>

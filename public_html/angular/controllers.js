@@ -110,7 +110,7 @@ ANG_TED_APP.
 		/*
 			文章字幕にするかどうか
 		*/
-		$scope.isSentenseSubtitled = false;
+		$scope.isSentenseSubtitled = true;
 
 		/*
 			動画の質
