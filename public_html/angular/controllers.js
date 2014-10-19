@@ -80,16 +80,20 @@ ANG_TED_APP.
 			動画の再生位置
 		*/
 		$scope.video_time = 0;
+
 		/*
 			talkの各言語の字幕データ
 		*/
 		$scope.subtitles = {};
+
+
 		/*
 			リアルタイムに表示している字幕
 			構造
 			{"ja": " 今の日本語字幕", "en": "real time English subtitle"}
 		*/
 		$scope.nowSubtitles = {};
+
 		/*
 			リアルタイムに表示する、文章形式の字幕
 			構造
@@ -97,18 +101,25 @@ ANG_TED_APP.
 		*/
 		$scope.nowSentenseSubtitles = {};
 
+
 		/*
 			 センテンスの終わり
 		*/
 		var sentense_end_indexs = [];
+
 		/*
 			文章字幕にするかどうか
 		*/
 		$scope.isSentenseSubtitled = false;
+
 		/*
 			動画の質
 		*/
 		$scope.video_quality = "450k";
+
+
+		/* 現在の字幕のインデックス*/
+		$scope.nowSubtitleIndex = -1;
 		/*
 			文の区切れ目を調べる
 		*/
@@ -149,6 +160,7 @@ ANG_TED_APP.
 				var subtitle = subtitles[i].caption;
 				var startTime = subtitle.startTime;
 				if(startTime > sec*1000){
+					$scope.nowSubtitleIndex = i-1;
 					return i-1;
 				}
 			}
@@ -242,6 +254,23 @@ ANG_TED_APP.
 				myVideo.play();
 			});
 			
+		};
+
+		/*
+			字幕のインデックスから、再生位置を変更
+		*/
+		$scope.changeVideoPositionBySubtitle = function(forward){
+			var startTime;
+
+			$scope.nowSubtitleIndex += forward;
+
+			// 前または後ろに字幕がなかったら
+			if($scope.nowSubtitleIndex < 0 || $scope.nowSubtitleIndex >= $scope.subtitles['en'].length){
+				return;
+			}
+			startTime = $scope.subtitles['en'][$scope.nowSubtitleIndex].caption.startTime;
+			myVideo = document.getElementsByTagName('video')[0];
+			myVideo.currentTime = startTime/1000;
 		};
 
 		// Talkを取得

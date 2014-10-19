@@ -50,6 +50,14 @@
 			<!-- 画質選択　-->
 			<select ng-model="video_quality" ng-change="onchangeVideoUrl()" ng-options="quality as quality for (quality, v) in talk.media.internal"></select>
 
+			<!-- 字幕移動 -->
+			<div>
+				<button ng-click="changeVideoPositionBySubtitle(-1)">Previos</button>
+				<button ng-click="changeVideoPositionBySubtitle(0)">Top of</button>
+				<span>{{nowSubtitleIndex + 1}} / {{subtitles['en'].length}}</span>
+				<button ng-click="changeVideoPositionBySubtitle(1)">Next</button>
+			</div>
+
 			<!-- 字幕 -->
 			<h2 class="subtitle" ng-repeat="lang in nowSubtitles" ng-show="isSentenseSubtitled == false">
 				{{lang}}
