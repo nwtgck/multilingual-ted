@@ -221,7 +221,6 @@ ANG_TED_APP.
 		// 字幕を表示するか決める
 		$scope.selectSubtitle = function(lang){
 			var langFullName = $scope.talk.languages[lang].name;
-			var subtitleText = langFullName+" subtitles are ready.";
 
 			if(angular.isDefined($scope.subtitles[lang])){
 				if(angular.isDefined($scope.nowSubtitles[lang])){
@@ -238,8 +237,6 @@ ANG_TED_APP.
 			$scope.nowSubtitles[lang] = "Loading "+langFullName+" subtitles...";
 			gettingSubtitle(function(subtitles){
 				$scope.subtitles[lang] = subtitles;
-				$scope.nowSubtitles[lang] = subtitleText;
-				$scope.nowSentenseSubtitles[lang] = [subtitleText];
 
 				//　英語字幕の時は文章の区切れ目を調べる
 				if(lang == "en"){
