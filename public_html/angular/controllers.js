@@ -143,9 +143,7 @@ ANG_TED_APP.
 				for(j = sentense_end_indexs[i-1]+1 || 0; j <= sentense_end_indexs[i]; j++){
 					buff += " " + $scope.subtitles["en"][j].caption.content;
 				}
-				console.log(buff);
 			}
-			console.log(sentense_end_indexs);
 		};
 
 
@@ -172,13 +170,18 @@ ANG_TED_APP.
 			var idx = getSubtitleIndex(sec);
 			for(var lang in $scope.nowSubtitles){
 				var language = $scope.talk.languages[lang].name;
-				$scope.nowSubtitles[lang] = "["+language+" subtitles are ready]";
+				if(angular.isDefined($scope.subtitles[lang])){
+					$scope.nowSubtitles[lang] = "["+language+" subtitles are ready]";
+				}
 			}
 			if(idx == -1) return;
 
+			
 			// iを元に字幕を入れる
 			for(var lang in $scope.nowSubtitles){
-				$scope.nowSubtitles[lang] = $scope.subtitles[lang][idx].caption.content;
+				if(angular.isDefined($scope.subtitles[lang])){
+					$scope.nowSubtitles[lang] = $scope.subtitles[lang][idx].caption.content;
+				}
 			}
 		};
 
@@ -192,7 +195,10 @@ ANG_TED_APP.
 
 			for(var lang_code in $scope.nowSentenseSubtitles){
 				var language = $scope.talk.languages[lang_code].name;
-				$scope.nowSentenseSubtitles[lang_code] = [{content: "["+language+" sentence subtitles are ready]"}];
+				if(angular.isDefined($scope.subtitles[lang_code])){
+					$scope.nowSentenseSubtitles[lang_code] = [{content: "["+language+" sentence subtitles are ready]"}];
+				}
+				
 			}
 			if(idx == -1) return;
 
@@ -208,11 +214,13 @@ ANG_TED_APP.
 			// 字幕をセット
 			for(var lang_code in $scope.nowSentenseSubtitles){
 				$scope.nowSentenseSubtitles[lang_code] = [];
-				for(i = start_idx; i <= end_idx; i++){
-					$scope.nowSentenseSubtitles[lang_code].push({
-						now: (idx == i)? true: false,
-						content: " "+$scope.subtitles[lang_code][i].caption.content
-					});
+				if(angular.isDefined($scope.subtitles[lang_code])){
+					for(i = start_idx; i <= end_idx; i++){
+						$scope.nowSentenseSubtitles[lang_code].push({
+							now: (idx == i)? true: false,
+							content: " "+$scope.subtitles[lang_code][i].caption.content
+						});
+					}
 				}
 			}
 		};
@@ -232,17 +240,18 @@ ANG_TED_APP.
 					$scope.nowSentenseSubtitles[lang] = [];
 				}
 				return;
+			} else {
+				var language = $scope.talk.languages[lang].name;
+				$scope.nowSubtitles[lang] = "Loading "+language+" subtitle...";
+				$scope.nowSentenseSubtitles[lang] = [{content: "Loading "+language+" subtitle..."}];
+				gettingSubtitle(function(subtitles){
+					$scope.subtitles[lang] = subtitles;
+					//　英語字幕の時は文章の区切れ目を調べる
+					if(lang == "en"){
+						setSentenseEnds();
+					}
+				}, talk_id, lang);
 			}
-			$scope.nowSubtitles[lang] = "Loading "+langFullName+" subtitles...";
-			gettingSubtitle(function(subtitles){
-				$scope.subtitles[lang] = subtitles;
-				$scope.nowSubtitles[lang] = "";
-				$scope.nowSentenseSubtitles[lang] = [];
-				//　英語字幕の時は文章の区切れ目を調べる
-				if(lang == "en"){
-					setSentenseEnds();
-				}
-			}, talk_id, lang);
 		};
 
 		// 字幕非表示にする
@@ -257,10 +266,11 @@ ANG_TED_APP.
 			var currentTime = myVideo.currentTime;
 			myVideo.src = $scope.talk.media.internal[$scope.video_quality].uri;
 
-				
+			myVideo.controls = false; 
 			myVideo.addEventListener('loadedmetadata', function(){
 				myVideo.currentTime = currentTime;
 				myVideo.play();
+				myVideo.controls = true; 
 			});
 			
 		};

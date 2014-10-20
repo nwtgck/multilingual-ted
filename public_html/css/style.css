@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 body{
-	font-size: 25px;
+	font-size: 20px;
 	font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
 	padding-bottom: 3em;
 }
@@ -14,7 +14,9 @@ input, button{
 
 }
 	.talk_page video{
-		/*width: 100%;*/
+		width: 600px;
+		height: 350px;
+		background-color: black;
 		border: solid #ccc 5px;
 	}
 
@@ -43,7 +45,7 @@ input, button{
 	}
 
 .scroll_box{
-	font-size: 1.3em;
+	font-size: 1em;
 	overflow: scroll;
 	width: 13em;
 	height: 15em;

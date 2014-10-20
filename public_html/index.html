@@ -43,7 +43,7 @@
 	<!-- Talk Page -->
 	<script type="text/ng-template" id="/talk">
 		<div ng-controller="talkCtrl" class="talk_page">
-			<video ng-src="talk.media.internal[video_quality].uri" controls></video><br>
+			<video ng-src="{{talk.media.internal[video_quality].uri}}" controls></video><br>
 			<!-- 画質選択　-->
 			<select ng-model="video_quality" ng-change="onchangeVideoUrl()" ng-options="quality as quality for (quality, v) in talk.media.internal"></select>
 
