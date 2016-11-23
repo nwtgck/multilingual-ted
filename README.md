@@ -6,6 +6,8 @@ TED with multilingual subtitles.
 
 [Multilingual TED](http://nwtgck.github.io/multilingual-ted)
 
+# Demo
+
 <image src="https://raw.githubusercontent.com/nwtgck/multilingual-ted/master/demo/demo.gif" width="600" border="3">
 
 # How to use
